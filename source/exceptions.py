@@ -1,0 +1,2 @@
+class EmptySubsetChosen(Exception):
+    pass
