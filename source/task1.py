@@ -1,30 +1,18 @@
 import lib
 
-def n_best_movies(n, ratings):
-    ratings_sorted = ratings.sort_values(by=['averageRating'], ascending = False)
-    res = ratings_sorted['tconst'][:200].to_list()
+def n_best_movies(n, data):
+    sorted_by_rating = data.sort_values(by=['averageRating'], ascending = False)
+    res = sorted_by_rating[['tconst', 'region']].iloc[:n]
     return res
 
-def countries_by_best_movies(akas, best_movies):
-    
-    print(akas.index)
-    res = akas.loc[best_movies].groupby(['region']).count()
+def countries_by_best_movies(data):
+    countries_counts = data.groupby(['region']).count()
+    res = countries_counts.sort_values(by=['tconst']).index.to_list()
+    return res
 
 def analysis1(akas, ratings):
-
-    original_titles = akas[akas['isOriginalTitle'] == 1][['tconst', 'title']]
-    akas = akas[akas['isOriginalTitle'] == 0].merge(original_titles, on=['tconst', 'title'])
-    counts = akas[['tconst', 'title']].groupby(['tconst']).count()
-    movies_with_region_defined = counts.index[counts['title'] == 1].tolist()
-
-    akas = akas.set_index('tconst')
-    akas = akas.loc[movies_with_region_defined]
-
-    best_movies = [None] * 20
-    best_movies[19] = n_best_movies(200, ratings)
+    data = ratings.merge(akas, left_on = ['tconst'], right_index = True)
+    best_movies = n_best_movies(200, data)
     for i in range(19):
-        best_movies[i] = best_movies[19][:(i+1)*10]
-
-    for i in range(19):
-        order = countries_by_best_movies(akas, best_movies[i])
-        # print(order[:10])
+        order = countries_by_best_movies(best_movies.iloc[:(i+1)*10])
+        print(order[:10])

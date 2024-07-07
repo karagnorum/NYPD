@@ -1,7 +1,8 @@
 import argparse
-from read import read_frames
+from read import *
 from lib import choose_years
 from task1 import analysis1
+from task2 import analysis2
 from exceptions import EmptySubsetChosen
 
 def main():
@@ -15,11 +16,13 @@ def main():
     parser.add_argument('-end', type=int, help='End year for analysis', required=False)
     
     args = parser.parse_args()
-    frames = read_frames(args)
-    basics = frames[2]
+    frames = get_frames(args)
+    ratings, akas, episodes = frames
 
     if args.start:
         if args.end:
+            basics = read_basics(akas, args.basics, 'basics_cache.csv')
+            frames.append(basics)
             try:
                 for i in [0, 1]:
                     frames[i] = choose_years(frames[i], args.start, args.end, basics[['tconst', 'startYear']])
@@ -29,10 +32,11 @@ def main():
         else:
             print("End of range not given, using whole dataset.")
     
-    ratings, akas, basics, episodes = frames
+    for frame in frames:
+        frame.dropna()
 
-    analysis1(akas, ratings)
-            
+    # analysis1(akas, ratings)
+    analysis2(akas, ratings)
     
     
 

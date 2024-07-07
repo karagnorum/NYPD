@@ -1,3 +1,4 @@
 # Ignore all .tsv files
+*.csv
 *.tsv
-*__pychache__
+*.pyc
