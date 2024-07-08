@@ -2,3 +2,5 @@
 *.csv
 *.tsv
 *.pyc
+*build/
+*cache*

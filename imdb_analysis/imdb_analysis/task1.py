@@ -9,7 +9,7 @@ def countries_by_best_movies(data):
     return res
 
 def analysis1(akas, ratings):
-    data = ratings.merge(akas, left_on = ['tconst'], right_index = True)
+    data = ratings.merge(akas, on = ['tconst'])
     best_movies = n_best_movies(200, data)
     for i in range(19):
         order = countries_by_best_movies(best_movies.iloc[:(i+1)*10])

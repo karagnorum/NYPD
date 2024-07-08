@@ -1,6 +1,6 @@
 import pandas as pd
-from read import *
-from exceptions import EmptySubsetChosen
+from .read import *
+from .exceptions import EmptySubsetChosen
 
 def choose_years(df, fromYear, toYear, years):
 
@@ -17,11 +17,11 @@ def choose_years(df, fromYear, toYear, years):
 def get_frames(args):
     
     frames = read_frames(args)
+    print('Frames read successully')
 
     if args.start:
         if args.end:
             basics = read_basics(args.basics, 'basics_cache.csv')
-            print(basics.columns)
             try:
                 for i in range(len(frames)):
                     frames[i] = choose_years(frames[i], args.start, args.end, basics)
@@ -33,6 +33,8 @@ def get_frames(args):
     
     for frame in frames:
         frame.dropna(inplace=True)
+    
+    print('Frames delivered successfully.')
     
     return frames
 
