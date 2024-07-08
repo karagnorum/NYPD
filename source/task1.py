@@ -1,5 +1,3 @@
-import lib
-
 def n_best_movies(n, data):
     sorted_by_rating = data.sort_values(by=['averageRating'], ascending = False)
     res = sorted_by_rating[['tconst', 'region']].iloc[:n]

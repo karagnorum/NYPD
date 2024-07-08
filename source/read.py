@@ -22,7 +22,7 @@ def read_and_cache_akas(read_path, cache_path):
 
     return akas
 
-def read_basics(akas, read_path, cache_path):
+def read_basics(read_path, cache_path):
 
     if os.path.exists(cache_path):
         basics = pd.read_csv(cache_path)
@@ -34,13 +34,12 @@ def read_basics(akas, read_path, cache_path):
         }
 
         basics = pd.read_csv(read_path, sep='\t', header=0, na_values='\\N', dtype=basics_dtypes, usecols=['tconst', 'startYear'])
-        basics = basics.merge(akas, left_on='tconst', right_index=True)
-        basics[['tconst', 'startYear']].to_csv(cache_path)
+        basics.to_csv(cache_path)
 
     return basics
 
 
-def get_frames(paths):
+def read_frames(paths):
 
     ratings = pd.read_csv(paths.ratings, sep='\t', header=0, na_values='\\N', dtype={'tconst': 'str', 'averageRating': 'float', 'numVotes': 'int'})
 
@@ -51,9 +50,8 @@ def get_frames(paths):
         'episodeNumber': 'float64'
     }
 
-    episodes = pd.DataFrame(['Uncomment code and cache whole basics!'])
-    # episodes = pd.read_csv(paths.episodes, sep='\t', header=0, na_values='\\N', dtype=episodes_dtypes)
-    # episodes.rename(columns={'parentTconst': 'tconst', 'tconst': 'episodeId'}, inplace=True)
+    episodes = pd.read_csv(paths.episodes, sep='\t', header=0, na_values='\\N', dtype=episodes_dtypes)
+    episodes.rename(columns={'parentTconst': 'tconst', 'tconst': 'episodeId'}, inplace=True)
 
     cache_path = 'akas_cache.csv'
 
