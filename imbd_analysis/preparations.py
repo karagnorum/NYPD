@@ -7,6 +7,7 @@ def choose_years(df, fromYear, toYear, years):
     df.reset_index(inplace=True)
     merged = df.merge(years, on=['tconst'])
     res = merged.loc[(merged['startYear'] >= fromYear) & (merged['startYear'] <= toYear)]
+    res = res.drop('startYear', axis='columns')
 
     if res.empty: 
         raise EmptySubsetChosen
@@ -20,6 +21,7 @@ def get_frames(args):
     if args.start:
         if args.end:
             basics = read_basics(args.basics, 'basics_cache.csv')
+            print(basics.columns)
             try:
                 for i in range(len(frames)):
                     frames[i] = choose_years(frames[i], args.start, args.end, basics)

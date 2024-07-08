@@ -20,7 +20,7 @@ def main():
 
     # analysis1(akas, ratings)
     # analysis2(akas, ratings)
-    analysis3(ratings, episodes)
+    # analysis3(ratings, episodes)
     
     
 

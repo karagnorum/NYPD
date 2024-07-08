@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats as st
 
 def analysis3(ratings, episodes):
     
@@ -12,5 +13,18 @@ def analysis3(ratings, episodes):
 
     last_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].max()
     episodes_totals = last_episodes.groupby(['tconst']).sum().reset_index()
+    episodes_totals.rename(columns={'episodeNumber': 'numberOfEpisodes'}, inplace=True)
     episodes_totals = episodes_totals.merge(ratings, on=['tconst'])
+    
+    #remove outliers
+    quantile_99 = episodes_totals['numberOfEpisodes'].quantile(0.99)
+    episodes_totals = episodes_totals.loc[episodes_totals['numberOfEpisodes'] <= quantile_99]
+
+    avg_rating = episodes_totals['averageRating']
+    num_episodes = episodes_totals['numberOfEpisodes']
+    print(st.pearsonr(avg_rating, num_episodes).statistic)
+    plt.scatter(avg_rating, num_episodes)
+    plt.xlabel('average rating')
+    plt.ylabel('number of episodes')
+    plt.show()
 

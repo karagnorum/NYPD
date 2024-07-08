@@ -25,7 +25,7 @@ def read_and_cache_akas(read_path, cache_path):
 def read_basics(read_path, cache_path):
 
     if os.path.exists(cache_path):
-        basics = pd.read_csv(cache_path)
+        basics = pd.read_csv(cache_path, usecols=['tconst', 'startYear'])
     
     else:
         basics_dtypes = {
