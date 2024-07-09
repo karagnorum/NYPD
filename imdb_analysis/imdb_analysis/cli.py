@@ -1,8 +1,9 @@
 import argparse
-from .preparations import get_frames
+from .preparations import prepare_frames
 from .task1 import analysis1
 from .task2 import analysis2
 from .task3 import analysis3
+from .read import *
 from .exceptions import EmptySubsetChosen
 
 def main():
@@ -16,10 +17,14 @@ def main():
     parser.add_argument('-end', type=int, help='End year for analysis', required=False)
     
     args = parser.parse_args()
-    ratings, akas, episodes = get_frames(args)
+    try:
+        ratings, akas, episodes = prepare_frames(read_frames(args), read_basics(args.basics, 'basics_cache.csv'), args)
+    except EmptySubsetChosen:
+        print("No movies in given range.")
+        return
 
-    analysis1(akas, ratings)
-    analysis2(akas, ratings)
+    data = analysis1(akas, ratings)
+    analysis2(data)
     analysis3(ratings, episodes)
     
     

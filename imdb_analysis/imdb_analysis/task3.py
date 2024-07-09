@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import scipy.stats as st
 
 def analysis3(ratings, episodes):
     
@@ -14,17 +13,18 @@ def analysis3(ratings, episodes):
     last_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].max()
     episodes_totals = last_episodes.groupby(['tconst']).sum().reset_index()
     episodes_totals.rename(columns={'episodeNumber': 'numberOfEpisodes'}, inplace=True)
-    episodes_totals = episodes_totals.merge(ratings, on=['tconst'])
+    episodes_totals = episodes_totals.merge(ratings[['tconst', 'numVotes']], on=['tconst'])
     
     #remove outliers
-    quantile_99 = episodes_totals['numberOfEpisodes'].quantile(0.99)
-    episodes_totals = episodes_totals.loc[episodes_totals['numberOfEpisodes'] <= quantile_99]
+    quantile_num_epi = episodes_totals['numberOfEpisodes'].quantile(0.99)
+    episodes_totals = episodes_totals.loc[episodes_totals['numberOfEpisodes'] <= quantile_num_epi]
+    quantile_quality_max = episodes_totals['numVotes'].quantile(0.99)
+    episodes_totals = episodes_totals.loc[episodes_totals['numVotes'] <= quantile_quality_max]
 
-    avg_rating = episodes_totals['averageRating']
+    avg_rating = episodes_totals['numVotes']
     num_episodes = episodes_totals['numberOfEpisodes']
-    print(st.pearsonr(avg_rating, num_episodes).statistic)
-    plt.scatter(avg_rating, num_episodes)
-    plt.xlabel('average rating')
+    plt.scatter(avg_rating, num_episodes, s = 1)
+    plt.xlabel('numVotes')
     plt.ylabel('number of episodes')
     plt.show()
 

@@ -13,6 +13,10 @@ setup(
             'imdb_analysis=imdb_analysis.cli:main',
         ],
     },
+    include_package_data=True,
+    package_data={
+        'imdb_analysis': ['data/*']
+    },
     author='Krzysztof Hajderek',
     author_email='kh438485@students.mimuw.edu.pl',
     description='imdb analysis',

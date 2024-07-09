@@ -1,5 +1,4 @@
 import pandas as pd
-from .read import *
 from .exceptions import EmptySubsetChosen
 
 def choose_years(df, fromYear, toYear, years):
@@ -14,27 +13,17 @@ def choose_years(df, fromYear, toYear, years):
 
     return res
 
-def get_frames(args):
+def prepare_frames(frames, basics, args):
     
-    frames = read_frames(args)
-    print('Frames read successully')
-
     if args.start:
         if args.end:
-            basics = read_basics(args.basics, 'basics_cache.csv')
-            try:
-                for i in range(len(frames)):
-                    frames[i] = choose_years(frames[i], args.start, args.end, basics)
-            except EmptySubsetChosen:
-                print("No movies in given range.")
-                return
+            for i in range(len(frames)):
+                frames[i] = choose_years(frames[i], args.start, args.end, basics)
         else:
             print("End of range not given, using whole dataset.")
     
     for frame in frames:
         frame.dropna(inplace=True)
-    
-    print('Frames delivered successfully.')
     
     return frames
 
