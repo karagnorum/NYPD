@@ -15,8 +15,7 @@ def hegemons(statistic_ranks, impact_ranks):
     return res
 
 def ranks(df, codes, countries):
-    res = df.rename(columns={'Country Code': 'alpha-3', '2023': 'value'})
-    res = res.dropna()
+    res = df.dropna()
     res = res.merge(codes, on=['alpha-3'])
     res = res.merge(countries, on = ['alpha-2'])
     res = res.sort_values(by=['value'], ascending=False)['alpha-2'].to_list()
@@ -25,11 +24,12 @@ def ranks(df, codes, countries):
 def statistic_ranks(statistic, codes, countries):
     path = pk.resource_filename('imdb_analysis', 'data/' + statistic + '.csv')
     df = pd.read_csv(path, header=0, usecols=['Country Code', '2023'])
+    df = df.rename(columns={'Country Code': 'alpha-3', '2023': 'value'})
     return ranks(df, codes, countries)
 
-def sort_regions_by_sum(data, feature):
-    sums = data[['region', feature]].groupby(['region']).sum()
-    sums.sort_values(by = [feature], ascending = False, inplace = True)
+def sort_regions_by_sum(data, column):
+    sums = data[['region', column]].groupby(['region']).sum()
+    sums.sort_values(by = [column], ascending = False, inplace = True)
     return pd.DataFrame({'alpha-2': sums.index.to_list()})
 
 def analysis2(data):
