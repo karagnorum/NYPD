@@ -19,13 +19,16 @@ def main():
     args = parser.parse_args()
     try:
         ratings, akas, episodes = prepare_frames(read_frames(args), read_basics(args.basics, 'basics_cache.csv'), args)
+        data = ratings.merge(akas, on = ['tconst'])
+
+        for lst in analysis1(data, [(i + 1) * 10 for i in range(20)], 10):
+            print(lst)
+
+        analysis2(data)
+        analysis3(ratings, episodes)
     except EmptySubsetChosen:
         print("No movies in given range.")
-        return
 
-    data = analysis1(akas, ratings)
-    analysis2(data)
-    analysis3(ratings, episodes)
     
     
 

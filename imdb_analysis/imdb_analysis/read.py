@@ -34,6 +34,7 @@ def read_basics(read_path, cache_path):
         }
 
         basics = pd.read_csv(read_path, sep='\t', header=0, na_values='\\N', dtype=basics_dtypes, usecols=['tconst', 'startYear'])
+        basics.dropna(inplace=True)
         basics.to_csv(cache_path)
 
     return basics
