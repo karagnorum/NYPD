@@ -23,6 +23,7 @@ def main():
 
         for lst in analysis1(data, [(i + 1) * 10 for i in range(20)], 10):
             print(lst)
+            pass
 
         analysis2(data)
         analysis3(ratings, episodes)

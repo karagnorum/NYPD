@@ -18,7 +18,7 @@ def ranks(df, codes, countries):
     res = df.rename(columns={'Country Code': 'alpha-3', '2023': 'value'})
     res = res.dropna()
     res = res.merge(codes, on=['alpha-3'])
-    res = res.merge(pd.DataFrame({'alpha-2': countries}), on = ['alpha-2'])
+    res = res.merge(countries, on = ['alpha-2'])
     res = res.sort_values(by=['value'], ascending=False)['alpha-2'].to_list()
     return res
 
@@ -30,7 +30,7 @@ def statistic_ranks(statistic, codes, countries):
 def sort_regions_by_sum(data, feature):
     sums = data[['region', feature]].groupby(['region']).sum()
     sums.sort_values(by = [feature], ascending = False, inplace = True)
-    return pd.DataFrame(sums.index.to_list())
+    return pd.DataFrame({'alpha-2': sums.index.to_list()})
 
 def analysis2(data):
 
@@ -44,8 +44,8 @@ def analysis2(data):
     strong_hegemons = dict()
     for s in ['gdp', 'gdp_pc', 'population']:
         s_ranks = statistic_ranks(s, country_codes, weak_ranks)
-        weak_hegemons[s] = hegemons(s_ranks, weak_ranks)
-        strong_hegemons[s] = hegemons(s_ranks, strong_ranks)
+        weak_hegemons[s] = hegemons(s_ranks, weak_ranks['alpha-2'].to_list())
+        strong_hegemons[s] = hegemons(s_ranks, strong_ranks['alpha-2'].tolist())
     
     print('weak impact: ', weak_hegemons)
     print('strong impact: ', strong_hegemons)
