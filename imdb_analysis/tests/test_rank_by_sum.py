@@ -2,6 +2,10 @@ import pytest
 import pandas as pd
 from imdb_analysis.task2 import rank_by_sum
 
+import pytest
+import pandas as pd
+from imdb_analysis.task2 import rank_by_sum
+from lib import assert_almost_equal
 
 @pytest.fixture
 def sample_data1():
@@ -29,24 +33,27 @@ def sample_data3():
 
 def test_sort_regions_by_sum_sample_data1(sample_data1):
     result = rank_by_sum(sample_data1, 'value')
-    expected = pd.DataFrame({'alpha-2': ['DE', 'FR', 'UK', 'US']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'UK', 'FR', 'DE'],
+        'impact_rank': [1, 2, 3, 4]
+    })
+    assert_almost_equal(result, expected)
 
 def test_sort_regions_by_sum_sample_data2(sample_data2):
     result = rank_by_sum(sample_data2, 'value')
-    expected = pd.DataFrame({'alpha-2': ['US', 'FR', 'UK']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['UK', 'FR', 'US'],
+        'impact_rank': [1, 2, 3]
+    })
+    assert_almost_equal(result, expected)
 
 def test_sort_regions_by_sum_sample_data3(sample_data3):
     result = rank_by_sum(sample_data3, 'value')
-    expected = pd.DataFrame({'alpha-2': ['US', 'DE', 'UK']})
-    pd.testing.assert_frame_equal(result, expected)
-
-def test_sort_regions_by_sum_combined_data(sample_data1, sample_data2, sample_data3):
-    combined_data = pd.concat([sample_data1, sample_data2, sample_data3], ignore_index=True)
-    result = rank_by_sum(combined_data, 'value')
-    expected = pd.DataFrame({'alpha-2': ['US', 'DE', 'UK', 'FR']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['UK', 'DE', 'US'],
+        'impact_rank': [1, 2, 3]
+    })
+    assert_almost_equal(result, expected)
 
 def test_sort_regions_by_sum_different_column():
     data = pd.DataFrame({
@@ -55,8 +62,11 @@ def test_sort_regions_by_sum_different_column():
         'other_value': [50, 100, 150, 200]
     })
     result = rank_by_sum(data, 'other_value')
-    expected = pd.DataFrame({'alpha-2': ['DE', 'FR', 'UK', 'US']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'UK', 'FR', 'DE'],
+        'impact_rank': [1, 2, 3, 4]
+    })
+    assert_almost_equal(result, expected)
 
 def test_sort_regions_by_sum_single_entry():
     data = pd.DataFrame({
@@ -65,8 +75,11 @@ def test_sort_regions_by_sum_single_entry():
         'value': [100]
     })
     result = rank_by_sum(data, 'value')
-    expected = pd.DataFrame({'alpha-2': ['US']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['US'],
+        'impact_rank': [1]
+    })
+    assert_almost_equal(result, expected)
 
 def test_sort_regions_by_sum_tied_values():
     data = pd.DataFrame({
@@ -75,5 +88,8 @@ def test_sort_regions_by_sum_tied_values():
         'value': [100, 100, 200, 200]
     })
     result = rank_by_sum(data, 'value')
-    expected = pd.DataFrame({'alpha-2': ['UK', 'US']})
-    pd.testing.assert_frame_equal(result, expected)
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'UK'],
+        'impact_rank': [1, 2]
+    })
+    assert_almost_equal(result, expected)

@@ -1,5 +1,6 @@
 import pandas as pd
 from imdb_analysis.task2 import get_stat_ranks
+from lib import assert_almost_equal
 
 def test_ranks_basic():
     df = pd.DataFrame({
@@ -14,10 +15,13 @@ def test_ranks_basic():
         'alpha-2': ['US', 'GB', 'CA', 'AU', 'FR']
     })
     
-    expected = (['AU', 'GB', 'CA', 'US'])
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'CA', 'GB', 'AU'],
+        'stat_rank': [1, 2, 3, 4]
+    })
     result = get_stat_ranks(df, codes, countries)
     
-    result == expected
+    assert_almost_equal(result, expected)
 
 def test_ranks_with_missing_values():
     df = pd.DataFrame({
@@ -32,10 +36,13 @@ def test_ranks_with_missing_values():
         'alpha-2': ['US', 'GB', 'CA', 'AU', 'FR', 'DE']
     })
     
-    expected = (['AU', 'DE', 'GB', 'US'])
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'GB', 'DE', 'AU'],
+        'stat_rank': [1, 2, 3, 4]
+    })
     result = get_stat_ranks(df, codes, countries)
     
-    result == expected
+    assert_almost_equal(result, expected)
 
 def test_ranks_with_unlisted_countries():
     df = pd.DataFrame({
@@ -50,10 +57,13 @@ def test_ranks_with_unlisted_countries():
         'alpha-2': ['US', 'GB', 'AU']
     })
     
-    expected = (['AU', 'GB', 'US'])
+    expected = pd.DataFrame({
+        'alpha-2': ['US', 'GB', 'AU'],
+        'stat_rank': [1, 2, 3]
+    })
     result = get_stat_ranks(df, codes, countries)
     
-    result == expected
+    assert_almost_equal(result, expected)
 
 def test_ranks_all_missing_values():
     df = pd.DataFrame({
@@ -68,10 +78,13 @@ def test_ranks_all_missing_values():
         'alpha-2': ['US', 'GB', 'CA', 'AU', 'FR']
     })
     
-    expected = []
+    expected = pd.DataFrame({
+        'alpha-2': [],
+        'stat_rank': []
+    })
     result = get_stat_ranks(df, codes, countries)
     
-    result == expected
+    pd.testing.assert_frame_equal(result, expected, check_dtype=False)
 
 def test_ranks_no_valid_countries():
     df = pd.DataFrame({
@@ -86,8 +99,10 @@ def test_ranks_no_valid_countries():
         'alpha-2': ['JP', 'CN', 'RU']
     })
     
-    expected = []
+    expected = pd.DataFrame({
+        'alpha-2': [],
+        'stat_rank': []
+    })
     result = get_stat_ranks(df, codes, countries)
     
-    result == expected
-
+    pd.testing.assert_frame_equal(result, expected, check_dtype=False)

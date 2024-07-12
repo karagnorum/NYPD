@@ -110,12 +110,12 @@ def test_analysis2_some_hegemons():
     assert result == expected_output
 
 def test_analysis2_hegemons():
-    data_no_hegemons = pd.DataFrame({
+    data = pd.DataFrame({
         'region': ['US', 'GB', 'FR', 'DE'],
         'feature': [400, 300, 200, 100]
     })
 
-    resources_no_hegemons = {
+    resources = {
         'codes': pd.DataFrame({
             'alpha-2': ['US', 'GB', 'FR', 'DE'],
             'alpha-3': ['USA', 'GBR', 'FRA', 'DEU']
@@ -135,6 +135,6 @@ def test_analysis2_hegemons():
         'stat2': {'US'}
     }
 
-    result = analysis2(data_no_hegemons, resources_no_hegemons, statistics, 'feature')
+    result = analysis2(data, resources, statistics, 'feature')
 
     assert result == expected_output
