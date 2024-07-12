@@ -1,14 +1,14 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
 def analysis3(ratings, episodes):
-    
     min_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].min()
     which_series = min_episodes.groupby(['tconst']).apply(lambda x: x.isin([0, 1]).all())
+    how_many_invalid = len(which_series[which_series == False])
+    msg = 'There were found ' + str(how_many_invalid) + """ series with at least one season  without first episode and were omitted during analysis 3."""
     which_series = which_series.reset_index()
     which_series.columns = ['tconst', 'valid']
     episodes = episodes.merge(which_series, on=['tconst'])
-    episodes = episodes.loc[episodes['valid'] == True]
+    episodes = episodes.loc[episodes['valid']]
 
     last_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].max()
     episodes_totals = last_episodes.groupby(['tconst']).sum().reset_index()
@@ -21,10 +21,6 @@ def analysis3(ratings, episodes):
     quantile_quality_max = episodes_totals['numVotes'].quantile(0.99)
     episodes_totals = episodes_totals.loc[episodes_totals['numVotes'] <= quantile_quality_max]
 
-    avg_rating = episodes_totals['numVotes']
-    num_episodes = episodes_totals['numberOfEpisodes']
-    plt.scatter(avg_rating, num_episodes, s = 1)
-    plt.xlabel('numVotes')
-    plt.ylabel('number of episodes')
-    plt.show()
+    return episodes_totals, msg
+    
 

@@ -1,4 +1,5 @@
 import pandas as pd
+import pkg_resources as pk
 import os
 
 def read_and_cache_akas(read_path, cache_path):
@@ -63,3 +64,16 @@ def read_frames(paths):
         akas = read_and_cache_akas(paths.akas, cache_path)
 
     return [ratings, akas, episodes]
+
+def read_resources(statistics):
+    res = dict()
+
+    codes_path = pk.resource_filename('imdb_analysis', 'data/codes.csv')
+    res['codes'] = pd.read_csv(codes_path, header=0, usecols=['alpha-2', 'alpha-3'])
+
+    for s in statistics:
+        path = pk.resource_filename('imdb_analysis', 'data/' + s + '.csv')
+        df = pd.read_csv(path, header=0, usecols=['Country Code', '2023'])
+        res[s] = df.rename(columns={'Country Code': 'alpha-3', '2023': 'value'})
+    
+    return res

@@ -1,5 +1,5 @@
 import pandas as pd
-from imdb_analysis.task2 import ranks
+from imdb_analysis.task2 import get_stat_ranks
 
 def test_ranks_basic():
     df = pd.DataFrame({
@@ -15,7 +15,7 @@ def test_ranks_basic():
     })
     
     expected = (['AU', 'GB', 'CA', 'US'])
-    result = ranks(df, codes, countries)
+    result = get_stat_ranks(df, codes, countries)
     
     result == expected
 
@@ -33,7 +33,7 @@ def test_ranks_with_missing_values():
     })
     
     expected = (['AU', 'DE', 'GB', 'US'])
-    result = ranks(df, codes, countries)
+    result = get_stat_ranks(df, codes, countries)
     
     result == expected
 
@@ -51,7 +51,7 @@ def test_ranks_with_unlisted_countries():
     })
     
     expected = (['AU', 'GB', 'US'])
-    result = ranks(df, codes, countries)
+    result = get_stat_ranks(df, codes, countries)
     
     result == expected
 
@@ -69,7 +69,7 @@ def test_ranks_all_missing_values():
     })
     
     expected = []
-    result = ranks(df, codes, countries)
+    result = get_stat_ranks(df, codes, countries)
     
     result == expected
 
@@ -87,7 +87,7 @@ def test_ranks_no_valid_countries():
     })
     
     expected = []
-    result = ranks(df, codes, countries)
+    result = get_stat_ranks(df, codes, countries)
     
     result == expected
 

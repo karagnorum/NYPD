@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 setup.py
 imdb_analysis/__init__.py
@@ -14,3 +15,15 @@ imdb_analysis.egg-info/dependency_links.txt
 imdb_analysis.egg-info/entry_points.txt
 imdb_analysis.egg-info/requires.txt
 imdb_analysis.egg-info/top_level.txt
+imdb_analysis/data/codes.csv
+imdb_analysis/data/gdp.csv
+imdb_analysis/data/gdp_pc.csv
+imdb_analysis/data/population.csv
+tests/test_analysis1.py
+tests/test_choose_years.py
+tests/test_countries_by_best_movies.py
+tests/test_get_ranks.py
+tests/test_hegemons.py
+tests/test_n_best_movies.py
+tests/test_prepare_frames.py
+tests/test_sort_regions_by_sum.py

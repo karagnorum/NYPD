@@ -1,51 +1,35 @@
 import pandas as pd
-import pkg_resources as pk
 
 
 def hegemons(statistic_ranks, impact_ranks):
-    df1 = pd.DataFrame({'country': statistic_ranks, 'stat_rank': list(range(len(statistic_ranks)))[::-1]})
-    df2 = pd.DataFrame({'country': impact_ranks, 'impact_rank': list(range(len(impact_ranks)))[::-1]})
-    
-    merged = pd.merge(df1, df2, on='country')
+    merged = pd.merge(statistic_ranks, impact_ranks, on='alpha-2')
     merged['position_difference'] = merged['impact_rank'] - merged['stat_rank']
     
     max_difference = merged['position_difference'].max()
-    res = merged.loc[merged['position_difference'] == max_difference, 'country'].to_list()
+    res = merged.loc[merged['position_difference'] == max_difference, 'alpha-2'].to_list()
     
-    return res
+    return set(res)
 
-def ranks(df, codes, countries):
+def get_stat_ranks(df, codes, countries):
     res = df.dropna()
     res = res.merge(codes, on=['alpha-3'])
     res = res.merge(countries, on = ['alpha-2'])
-    res = res.sort_values(by=['value'], ascending=False)['alpha-2'].to_list()
-    return res
+    res['stat_rank'] = res['value'].rank(method='min', ascending = False)
+    return res[['alpha-2', 'stat_rank']]
 
-def statistic_ranks(statistic, codes, countries):
-    path = pk.resource_filename('imdb_analysis', 'data/' + statistic + '.csv')
-    df = pd.read_csv(path, header=0, usecols=['Country Code', '2023'])
-    df = df.rename(columns={'Country Code': 'alpha-3', '2023': 'value'})
-    return ranks(df, codes, countries)
+def rank_by_sum(data, column):
+    sums = data[['region', column]].groupby(['region']).sum().reset_index()
+    sums['impact_rank'] = sums[column].rank(method='min', ascending = False)
+    sums = sums.rename(columns={'region': 'alpha-2'})
+    return sums[['alpha-2', 'impact_rank']]
 
-def sort_regions_by_sum(data, column):
-    sums = data[['region', column]].groupby(['region']).sum()
-    sums.sort_values(by = [column], ascending = False, inplace = True)
-    return pd.DataFrame({'alpha-2': sums.index.to_list()})
+def analysis2(data, resources, statistics, feature):
+    impact_ranks = rank_by_sum(data, feature)
+    print(impact_ranks)
+    res = dict()
 
-def analysis2(data):
-
-    codes_path = pk.resource_filename('imdb_analysis', 'data/codes.csv')
-    country_codes = pd.read_csv(codes_path, header=0, usecols=['alpha-2', 'alpha-3'])
-
-    weak_ranks = sort_regions_by_sum(data, 'numVotes')
-    strong_ranks = sort_regions_by_sum(data, 'quality')
-
-    weak_hegemons = dict()
-    strong_hegemons = dict()
-    for s in ['gdp', 'gdp_pc', 'population']:
-        s_ranks = statistic_ranks(s, country_codes, weak_ranks)
-        weak_hegemons[s] = hegemons(s_ranks, weak_ranks['alpha-2'].to_list())
-        strong_hegemons[s] = hegemons(s_ranks, strong_ranks['alpha-2'].tolist())
+    for s in statistics:
+        s_ranks = get_stat_ranks(resources[s], resources['codes'], impact_ranks['alpha-2'])
+        res[s] = hegemons(s_ranks, impact_ranks)
     
-    print('weak impact: ', weak_hegemons)
-    print('strong impact: ', strong_hegemons)
+    return res
