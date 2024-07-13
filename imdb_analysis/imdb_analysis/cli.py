@@ -1,7 +1,7 @@
 import argparse
 import matplotlib.pyplot as plt
 from .preparations import prepare_frames
-from .task1 import analysis1
+from .task1 import analysis1, analysis1_alternative
 from .task2 import analysis2
 from .task3 import analysis3
 from .read import *
@@ -16,16 +16,22 @@ def main():
     parser.add_argument('episodes', type=str, help='Path to title.episode.tsv')
     parser.add_argument('-start', type=int, help='Start year for analysis', required=False)
     parser.add_argument('-end', type=int, help='End year for analysis', required=False)
+    parser.add_argument('-alternative', action='store_true', help='Use alternative version of analysis 1')
     
     args = parser.parse_args()
     try:
         basics = read_basics(args.basics, 'basics_cache.csv')
         ratings, akas, episodes = prepare_frames(read_frames(args), basics, args)
-        data = ratings.merge(akas, on = ['tconst'])
 
-        for lst in analysis1(data, [(i + 1) * 10 for i in range(20)], 10):
+        if args.alternative:
+            res1 = analysis1_alternative(akas, ratings, [(i + 1) * 10 for i in range
+                                                         (20)], 10)
+        else:
+            res1 = analysis1(akas, ratings, [(i + 1) * 10 for i in range(20)], 10) 
+        for lst in res1:
             print(lst)
 
+        data = ratings.merge(akas, on = ['tconst'])
         statistics = ['gdp', 'gdp_pc', 'population']
         resources = read_resources(statistics)
         weak_hegemons = analysis2(data, resources, statistics, 'numVotes')
