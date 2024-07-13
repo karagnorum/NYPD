@@ -3,7 +3,6 @@ from .exceptions import EmptySubsetChosen
 
 def choose_years(df, fromYear, toYear, years):
 
-    df.reset_index(inplace=True, drop=True)
     merged = df.merge(years, on=['tconst'])
     res = merged.loc[(merged['startYear'] >= fromYear) & (merged['startYear'] <= toYear)]
     res = res.drop('startYear', axis='columns')

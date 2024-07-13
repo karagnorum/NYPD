@@ -25,12 +25,10 @@ def rank_by_sum(data, column):
 
 def analysis2(data, resources, statistics, feature):
     impact_ranks = rank_by_sum(data, feature)
-    print(impact_ranks)
     res = dict()
 
     for s in statistics:
         s_ranks = get_stat_ranks(resources[s], resources['codes'], impact_ranks['alpha-2'])
-        print(s_ranks)
         res[s] = hegemons(s_ranks, impact_ranks)
     
     return res
