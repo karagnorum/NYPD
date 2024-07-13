@@ -2,6 +2,15 @@ import pandas as pd
 import pkg_resources as pk
 import os
 
+def filter_akas(akas):
+    original_titles = akas[akas['isOriginalTitle'] == 1][['tconst', 'title']]
+    akas = akas[akas['isOriginalTitle'] == 0].merge(original_titles, on=['tconst', 'title'])
+    counts = akas[['tconst', 'title']].groupby(['tconst']).count()
+    movies_with_region_defined = counts.index[counts['title'] == 1].tolist()
+    akas.set_index('tconst', inplace=True)
+    akas = akas.loc[movies_with_region_defined][['title', 'region']]
+    return akas
+
 def read_and_cache_akas(read_path, cache_path):
 
     dtypes = {
@@ -12,13 +21,7 @@ def read_and_cache_akas(read_path, cache_path):
     }
     akas = pd.read_csv(read_path, sep='\t', header=0, na_values='\\N', usecols=['titleId', 'title', 'region', 'isOriginalTitle'], dtype=dtypes)
     akas.rename(columns={'titleId': 'tconst'}, inplace=True)
-
-    original_titles = akas[akas['isOriginalTitle'] == 1][['tconst', 'title']]
-    akas = akas[akas['isOriginalTitle'] == 0].merge(original_titles, on=['tconst', 'title'])
-    counts = akas[['tconst', 'title']].groupby(['tconst']).count()
-    movies_with_region_defined = counts.index[counts['title'] == 1].tolist()
-    akas.set_index('tconst', inplace=True)
-    akas = akas.loc[movies_with_region_defined][['title', 'region']]
+    akas = filter_akas(akas)
     akas.to_csv(cache_path)
 
     return akas

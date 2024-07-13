@@ -33,16 +33,13 @@ def main():
         print('weak impact hegemons: ' + str(weak_hegemons)) 
         print('strong impact hegemons: ' + str(strong_hegemons)) 
 
-        res3, msg = analysis3(ratings, episodes)
+        res3, msg = analysis3(ratings, episodes, 0.99)
         res3.plot.scatter(x='numVotes', y='numberOfEpisodes')
         plt.show()
         print(msg)
 
     except EmptySubsetChosen:
         print("No movies in given range.")
-
-    
-    
 
 if __name__ == "__main__":
     main()
