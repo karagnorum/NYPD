@@ -1,14 +1,17 @@
 def n_best_movies(n, ratings):
+    """Returns first n rows of ratings sorted by quality"""
     sorted_by_quality = ratings.sort_values(by=['quality'], ascending = False)
     res = sorted_by_quality.iloc[:n]
     return res
 
 def countries_by_best_movies(data):
+    """Returns a list of countries in data frame data sorted by number of movies from the country present in data"""
     countries_counts = data.groupby(['region']).count()
     res = countries_counts.sort_values(by=['tconst'], ascending = False).index.to_list()
     return res
 
 def analysis1(akas, ratings, lst, n):
+    #calculate quality of a movie
     ratings_mean = ratings['averageRating'].mean()
     ratings['quality'] = (ratings['averageRating'] - ratings_mean) * ratings['numVotes']
 
@@ -23,6 +26,7 @@ def analysis1(akas, ratings, lst, n):
 
 
 def analysis1_alternative(akas, ratings, lst, n):
+    #calculate quality of a movie
     ratings_mean = ratings['averageRating'].mean()
     ratings['quality'] = (ratings['averageRating'] - ratings_mean) * ratings['numVotes']
 

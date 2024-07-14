@@ -6,7 +6,6 @@ def main():
     imdb_analysis.cli.main()
 
 if __name__ == '__main__':
-    # Create a profiler
     profiler = cProfile.Profile()
     
     # Run the main function with profiling

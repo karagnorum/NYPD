@@ -1,10 +1,12 @@
 import pandas as pd
 
 def remove_above_quantile(data, column, which_quantile):
+    """Returns data frame data with rows that have value above given quantile removed"""
     quantile = data[column].quantile(which_quantile)
     return data.loc[data[column] <= quantile]
     
 def analysis3(ratings, episodes, p):
+    #choose series, where every season starts from episode number 1 or 0
     min_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].min()
     which_series = min_episodes.groupby(['tconst']).apply(lambda x: x.isin([0, 1]).all())
     how_many_invalid = len(which_series[which_series == False])

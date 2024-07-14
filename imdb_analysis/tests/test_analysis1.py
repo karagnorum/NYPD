@@ -28,21 +28,36 @@ def sample_data3():
         'averageRating': [9.5, 8.5, 7.5, 6.5],
         'numVotes': [100, 100, 100, 100]
     })
+    
+import math
+    
+import math
 
-def ratings(data):
+def lists_almost_equal(lst1, lst2, rel_tol=1e-9, abs_tol=0.0):
+    if len(lst1) != len(lst2):
+        return False
+    return all(math.isclose(a, b, rel_tol=rel_tol, abs_tol=abs_tol) for a, b in zip(lst1, lst2))
+
+def get_ratings(data):
     return data[['tconst', 'averageRating', 'numVotes']]
 
-def akas(data):
+def get_akas(data):
     return data[['tconst', 'region']]
 
 def test_analysis1_sample_data1(sample_data1):
-    result = analysis1(akas(sample_data1), ratings(sample_data1), [2, 3], 2)
-    assert result == [['DE'], ['DE']]
+    ratings = get_ratings(sample_data1)
+    result = analysis1(get_akas(sample_data1), ratings, [2, 3], 2)
+    print(ratings['quality'])
+    assert (result == [['DE'], ['DE']]) and (lists_almost_equal(ratings['quality'].to_list(),  [-200.0, 120.0, -60.0, 375.0]))
 
 def test_analysis1_sample_data2(sample_data2):
-    result = analysis1(akas(sample_data2), ratings(sample_data2), [1, 2, 3], 2)
-    assert (result[0] == ['US']) and (set(result[1]) == {'UK', 'US'}) and (result[2] == ['US', 'UK'])
+    ratings = get_ratings(sample_data2)
+    result = analysis1(get_akas(sample_data2), ratings, [1, 2, 3], 2)
+    print(ratings['quality'])
+    assert (result[0] == ['US']) and (set(result[1]) == {'UK', 'US'}) and (result[2] == ['US', 'UK']) and (ratings['quality'].to_list() == [0.0, 25.0, 20.0, -300.0, -100])
 
 def test_analysis1_sample_data3(sample_data3):
-    result = analysis1(akas(sample_data3), ratings(sample_data3), [2, 3, 4], 4)
-    assert (result == [['DE'], ['DE', 'US'], ['DE', 'US', 'UK']]) or (result == [['DE'], ['DE', 'US'], ['DE', 'UK', 'US']])
+    ratings =  get_ratings(sample_data3)
+    result = analysis1(get_akas(sample_data3), ratings, [2, 3, 4], 4)
+    print(ratings['quality'])
+    assert (result == [['DE'], ['DE', 'US'], ['DE', 'US', 'UK']]) or (result == [['DE'], ['DE', 'US'], ['DE', 'UK', 'US']]) and (ratings['quality'].to_list() == [150.0, 50.0, -50.0, -150.0])

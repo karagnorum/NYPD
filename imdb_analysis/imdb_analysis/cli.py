@@ -20,28 +20,38 @@ def main():
     
     args = parser.parse_args()
     try:
-        basics = read_basics(args.basics, 'basics_cache.csv')
-        ratings, akas, episodes = prepare_frames(read_frames(args), basics, args)
+        years = read_years(args.basics, 'basics_cache.csv')
+        ratings, regions, episodes = prepare_frames(read_frames(args), years, args)
         
+        # task 1
+        # We want ranks for 10, 20, ..., 200 best movies
+        rank_lengths = [(i + 1) * 10 for i in range (20)]
         if args.alternative:
-            res1 = analysis1_alternative(akas, ratings, [(i + 1) * 10 for i in range
-                                                         (20)], 10)
+            #if specified, use alternative version of analysis 1
+            res1 = analysis1_alternative(regions, ratings, rank_lengths, 10)
         else:
-            res1 = analysis1(akas, ratings, [(i + 1) * 10 for i in range(20)], 10) 
+            res1 = analysis1(regions, ratings, [(i + 1) * 10 for i in range(20)], 10) 
+        # print 10 top countries for every case
         for lst in res1:
             print(lst)
-
-        data = ratings.merge(akas, on = ['tconst'])
+            
+        #task 2
+        data = ratings.merge(regions, on = ['tconst'])
+        #statistics used in analysis 2, gdp_pc = GDP per capita
         statistics = ['gdp', 'gdp_pc', 'population']
         resources = read_resources(statistics)
+        #hegemons with respect to weak impact
         weak_hegemons = analysis2(data, resources, statistics, 'numVotes')
+        #hegemons with respect to strong impact
         strong_hegemons = analysis2(data, resources, statistics, 'quality')
         print('weak impact hegemons: ' + str(weak_hegemons)) 
         print('strong impact hegemons: ' + str(strong_hegemons)) 
 
         res3, msg = analysis3(ratings, episodes, 0.99)
+        #plot result od analysis 3
         res3.plot.scatter(x='numVotes', y='numberOfEpisodes')
         plt.savefig('analysis3_plot.png')
+        # print message about ommited series
         print(msg)
 
     except EmptySubsetChosen:

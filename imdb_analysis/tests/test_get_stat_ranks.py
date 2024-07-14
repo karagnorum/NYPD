@@ -1,5 +1,5 @@
 import pandas as pd
-from imdb_analysis.task2 import get_stat_ranks
+from imdb_analysis.task2 import stat_ranks
 from lib import assert_almost_equal
 
 def test_ranks_basic():
@@ -19,7 +19,7 @@ def test_ranks_basic():
         'alpha-2': ['US', 'CA', 'GB', 'AU'],
         'stat_rank': [1, 2, 3, 4]
     })
-    result = get_stat_ranks(df, codes, countries)
+    result = stat_ranks(df, codes, countries)
     
     assert_almost_equal(result, expected)
 
@@ -40,7 +40,7 @@ def test_ranks_with_missing_values():
         'alpha-2': ['US', 'GB', 'DE', 'AU'],
         'stat_rank': [1, 2, 3, 4]
     })
-    result = get_stat_ranks(df, codes, countries)
+    result = stat_ranks(df, codes, countries)
     
     assert_almost_equal(result, expected)
 
@@ -61,7 +61,7 @@ def test_ranks_with_unlisted_countries():
         'alpha-2': ['US', 'GB', 'AU'],
         'stat_rank': [1, 2, 3]
     })
-    result = get_stat_ranks(df, codes, countries)
+    result = stat_ranks(df, codes, countries)
     
     assert_almost_equal(result, expected)
 
@@ -82,7 +82,7 @@ def test_ranks_all_missing_values():
         'alpha-2': [],
         'stat_rank': []
     })
-    result = get_stat_ranks(df, codes, countries)
+    result = stat_ranks(df, codes, countries)
     
     pd.testing.assert_frame_equal(result, expected, check_dtype=False)
 
@@ -103,6 +103,6 @@ def test_ranks_no_valid_countries():
         'alpha-2': [],
         'stat_rank': []
     })
-    result = get_stat_ranks(df, codes, countries)
+    result = stat_ranks(df, codes, countries)
     
     pd.testing.assert_frame_equal(result, expected, check_dtype=False)
