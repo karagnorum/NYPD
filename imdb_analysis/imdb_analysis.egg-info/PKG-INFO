@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: imdb_analysis
+Version: 0.1
+Summary: imdb analysis
+Author: Krzysztof Hajderek
+Author-email: kh438485@students.mimuw.edu.pl
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: scipy
+Requires-Dist: pandas
+Requires-Dist: matplotlib

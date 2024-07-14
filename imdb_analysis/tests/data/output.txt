@@ -1,0 +1,24 @@
+0 titles cannot be unambigously assigned a region and therefore where omitted during analysis 1 and 2
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+['GB', 'PL', 'US']
+weak impact hegemons: {'gdp': {'PL'}, 'gdp_pc': {'PL'}, 'population': {'PL'}}
+strong impact hegemons: {'gdp': {'PL'}, 'gdp_pc': {'PL'}, 'population': {'PL'}}
+There were found 0 series with at least one season without first episode and were omitted during analysis 3.
