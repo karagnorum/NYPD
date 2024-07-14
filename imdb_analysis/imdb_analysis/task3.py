@@ -6,11 +6,12 @@ def remove_above_quantile(data, column, which_quantile):
     return data.loc[data[column] <= quantile]
     
 def analysis3(ratings, episodes, p):
+    """Returns a data frame with number of votes and total number of episodes of each series"""
     #choose series, where every season starts from episode number 1 or 0
     min_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].min()
     which_series = min_episodes.groupby(['tconst']).apply(lambda x: x.isin([0, 1]).all())
     how_many_invalid = len(which_series[which_series == False])
-    msg = 'There were found ' + str(how_many_invalid) + """ series with at least one season without first episode and were omitted during analysis 3."""
+    msg = 'There were found ' + str(how_many_invalid) + ' series with at least one season without first episode and were omitted during analysis 3.'
     which_series = which_series.reset_index()
     which_series.columns = ['tconst', 'valid']
     episodes = episodes.merge(which_series, on=['tconst'])
@@ -20,7 +21,8 @@ def analysis3(ratings, episodes, p):
     last_episodes = episodes.groupby(['tconst', 'seasonNumber'])['episodeNumber'].max()
     episodes_totals = last_episodes.groupby(['tconst']).sum().reset_index()
     episodes_totals.rename(columns={'episodeNumber': 'numberOfEpisodes'}, inplace=True)
-    episodes_totals = episodes_totals.merge(ratings[['tconst', 'numVotes']], on=['tconst'])
+    episodes_totals = episodes_totals.merge(ratings[['tconst', 'numVotes']], on=
+                                            ['tconst'])
 
     #remove outliers
     episodes_totals = remove_above_quantile(episodes_totals, 'numVotes', p)

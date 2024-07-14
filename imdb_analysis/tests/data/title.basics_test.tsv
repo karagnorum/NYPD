@@ -1,0 +1,7 @@
+tconst	titleType	primaryTitle	originalTitle	isAdult	startYear	endYear	runtimeMinutes	genres
+tt0000001	tvseries	Serial PL 1	Serial PL 1	0	2020	2022	45	['Drama']
+tt0000002	tvseries	Serial PL 2	Serial PL 2	0	2019	2021	50	['Comedy', 'Drama']
+tt0000003	tvseries	Serial US 1	Serial US 1	0	2018	2020	60	['Action', 'Adventure']
+tt0000004	tvseries	Serial US 2	Serial US 2	0	2021	2023	55	['Sci-Fi']
+tt0000005	tvseries	Serial UK 1	Serial UK 1	0	2017	2019	40	['Mystery', 'Thriller']
+tt0000006	tvseries	Serial UK 2	Serial UK 2	0	2022	\N	48	['Drama', 'Romance']

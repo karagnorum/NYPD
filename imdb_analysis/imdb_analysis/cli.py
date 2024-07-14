@@ -7,20 +7,9 @@ from .task3 import analysis3
 from .read import *
 from .exceptions import EmptySubsetChosen
 
-def main():
-    
-    parser = argparse.ArgumentParser(description="Imdb movies analysis")
-    parser.add_argument('ratings', type=str, help='Path to ratings.tsv')
-    parser.add_argument('akas', type=str, help='Path to akas.tsv')
-    parser.add_argument('basics', type=str, help='Path to title.basics.tsv')
-    parser.add_argument('episodes', type=str, help='Path to title.episode.tsv')
-    parser.add_argument('-start', type=int, help='Start year for analysis', required=False)
-    parser.add_argument('-end', type=int, help='End year for analysis', required=False)
-    parser.add_argument('-alternative', action='store_true', help='Use alternative version of analysis 1')
-    
-    args = parser.parse_args()
+def run_analysis(args):
     try:
-        years = read_years(args.basics, 'basics_cache.csv')
+        years = read_years(args.basics)
         ratings, regions, episodes = prepare_frames(read_frames(args), years, args)
         
         # task 1
@@ -30,7 +19,7 @@ def main():
             #if specified, use alternative version of analysis 1
             res1 = analysis1_alternative(regions, ratings, rank_lengths, 10)
         else:
-            res1 = analysis1(regions, ratings, [(i + 1) * 10 for i in range(20)], 10) 
+            res1 = analysis1(regions, ratings, rank_lengths, 10) 
         # print 10 top countries for every case
         for lst in res1:
             print(lst)
@@ -47,15 +36,31 @@ def main():
         print('weak impact hegemons: ' + str(weak_hegemons)) 
         print('strong impact hegemons: ' + str(strong_hegemons)) 
 
+        #task 3
         res3, msg = analysis3(ratings, episodes, 0.99)
         #plot result od analysis 3
         res3.plot.scatter(x='numVotes', y='numberOfEpisodes')
-        plt.savefig('analysis3_plot.png')
+        plt.show()
         # print message about ommited series
         print(msg)
 
     except EmptySubsetChosen:
         print("No movies in given range.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Imdb movies analysis")
+    parser.add_argument('ratings', type=str, help='Path to ratings.tsv')
+    parser.add_argument('akas', type=str, help='Path to akas.tsv')
+    parser.add_argument('basics', type=str, help='Path to title.basics.tsv')
+    parser.add_argument('episodes', type=str, help='Path to title.episode.tsv')
+    parser.add_argument('-start', type=int, help='Start year for analysis', 
+                        required=False)
+    parser.add_argument('-end', type=int, help='End year for analysis', required=False)
+    parser.add_argument('-alternative', action='store_true', help="""Use alternative 
+                        version of analysis 1""")
+    
+    args = parser.parse_args()
+    run_analysis(args)
 
 if __name__ == "__main__":
     main()

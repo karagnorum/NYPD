@@ -1,0 +1,13 @@
+titleId	ordering	title	region	language	types	attributes	isOriginalTitle
+tt0000001	1	A	PL	pl	[]	[]	1
+tt0000002	1	B	PL	pl	[]	[]	1
+tt0000003	1	C	US	en	[]	[]	1
+tt0000004	1	D	US	en	[]	[]	1
+tt0000005	1	E	GB	en	[]	[]	1
+tt0000006	1	F	GB	en	[]	[]	1
+tt0000001	1	A	PL	pl	[]	[]	0
+tt0000002	1	B	PL	pl	[]	[]	0
+tt0000003	1	C	US	en	[]	[]	0
+tt0000004	1	D	US	en	[]	[]	0
+tt0000005	1	E	GB	en	[]	[]	0
+tt0000006	1	F	GB	en	[]	[]	0

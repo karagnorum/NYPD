@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from imdb_analysis.read import filter_akas
+from imdb_analysis.read import get_regions
 from lib import assert_almost_equal
 
 data1 = {
@@ -62,7 +62,7 @@ expected_data5 = {
 def run_test(data, expected_data):
     akas = pd.DataFrame(data)
     expected_df = pd.DataFrame(expected_data)
-    result_df = filter_akas(akas)
+    result_df = get_regions(akas)
     print(result_df)
     assert_almost_equal(result_df.reset_index(drop=True), expected_df.reset_index(drop=True))
 

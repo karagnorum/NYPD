@@ -1,4 +1,7 @@
-*.tsv
+akas.tsv
+ratings.tsv
+title.episode.tsv
+title.basics.tsv
 *.pyc
 *build/
 *cache*

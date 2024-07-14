@@ -28,13 +28,16 @@ def rank_by_sum(data, column):
     return sums[['alpha-2', 'impact_rank']]
 
 def analysis2(data, resources, statistics, feature):
+    """Returns a dictionary, which assigns each statistic the hegemons as in task 2"""
     #weak impact is sum of votes and strong impact is sum of qualities
     impact_ranks = rank_by_sum(data, feature)
+    print(impact_ranks)
     res = dict()
 
     #for every statistic, calculate ranks with respect to statistic and find hegemons
     for s in statistics:
-        stat_ranks = stat_ranks(resources[s], resources['codes'], impact_ranks['alpha-2'])
-        res[s] = hegemons(stat_ranks, impact_ranks)
+        s_ranks = stat_ranks(resources[s], resources['codes'], impact_ranks['alpha-2'])
+        print(s, s_ranks)
+        res[s] = hegemons(s_ranks, impact_ranks)
     
     return res

@@ -11,6 +11,7 @@ def countries_by_best_movies(data):
     return res
 
 def analysis1(akas, ratings, lst, n):
+    """Returns lists of lists as in task 1"""
     #calculate quality of a movie
     ratings_mean = ratings['averageRating'].mean()
     ratings['quality'] = (ratings['averageRating'] - ratings_mean) * ratings['numVotes']
