@@ -26,12 +26,35 @@ expected_data2 = {
 }
 
 data3 = {
-    'tconst': ['tt0000008', 'tt0000008', 'tt0000008', 'tt0000008'],
-    'title': ['Movie X', 'Movie X', 'Movie X', 'Movie X'],
-    'isOriginalTitle': [1, 0, 0, 0],
-    'region': [None, 'FR', 'US', 'JP']
+    'tconst': ['tt0000008', 'tt0000008', 'tt0000008', 'tt0000009', 'tt0000009'],
+    'title': ['Movie X', 'Movie X', 'Movie X', 'Movie Y', 'Movie Y'],
+    'isOriginalTitle': [1, 0, 0, 1, 0],
+    'region': [None, 'FR', 'US', None, 'JP']
 }
 expected_data3 = {
+    'tconst': ['tt0000009'],
+    'region': ['JP']
+}
+
+data4 = {
+    'tconst': ['tt0000008', 'tt0000008', 'tt0000008', 'tt0000009', 'tt0000009'],
+    'title': ['Movie X', 'Movie X', 'Movie X', 'Movie X', 'Movie X'],
+    'isOriginalTitle': [1, 0, 0, 1, 0],
+    'region': [None, 'FR', 'US', None, 'JP']
+}
+expected_data4 = {
+    'tconst': ['tt0000009'],
+    'region': ['JP']
+}
+
+
+data5 = {
+    'tconst': ['tt0000008', 'tt0000008', 'tt0000008', 'tt0000009', 'tt0000009','tt0000009'],
+    'title': ['Movie X', 'Movie X', 'Movie X', 'Movie X', 'Movie X', 'Movie X'],
+    'isOriginalTitle': [1, 0, 0, 1, 0, 0],
+    'region': [None, 'FR', 'US', None, 'JP', 'US']
+}
+expected_data5 = {
     'tconst': [],
     'region': []
 }
@@ -51,3 +74,9 @@ def test_filter_akas_dataset2():
 
 def test_filter_akas_dataset3():
     run_test(data3, expected_data3)
+
+def test_filter_akas_dataset4():
+    run_test(data4, expected_data4)
+
+def test_filter_akas_dataset5():
+    run_test(data5, expected_data5)

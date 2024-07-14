@@ -22,7 +22,7 @@ def main():
     try:
         basics = read_basics(args.basics, 'basics_cache.csv')
         ratings, akas, episodes = prepare_frames(read_frames(args), basics, args)
-
+        
         if args.alternative:
             res1 = analysis1_alternative(akas, ratings, [(i + 1) * 10 for i in range
                                                          (20)], 10)
@@ -41,7 +41,7 @@ def main():
 
         res3, msg = analysis3(ratings, episodes, 0.99)
         res3.plot.scatter(x='numVotes', y='numberOfEpisodes')
-        plt.show()
+        plt.savefig('analysis3_plot.png')
         print(msg)
 
     except EmptySubsetChosen:

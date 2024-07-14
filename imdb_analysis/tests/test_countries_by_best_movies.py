@@ -2,12 +2,6 @@ import pytest
 from imdb_analysis.task1 import countries_by_best_movies
 import pandas as pd
 
-def countries_by_best_movies(data):
-    # Group by 'region' and count the number of movies in each region
-    region_counts = data['region'].value_counts()
-    # Return the regions in the order of the count
-    return region_counts.index.tolist()
-
 @pytest.fixture
 def sample_data():
     # Set up a sample dataframe for testing

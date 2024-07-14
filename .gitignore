@@ -1,5 +1,3 @@
-# Ignore all .tsv files
-*.csv
 *.tsv
 *.pyc
 *build/
