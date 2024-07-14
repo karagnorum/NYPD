@@ -7,8 +7,7 @@ setup(
     install_requires=[
         'scipy',
         'pandas',
-        'matplotlib',
-        'pkg_resources'],
+        'matplotlib'],
     entry_points={
         'console_scripts': [
             'imdb_analysis=imdb_analysis.cli:main',

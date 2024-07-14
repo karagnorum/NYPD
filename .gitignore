@@ -2,6 +2,7 @@ akas.tsv
 ratings.tsv
 title.episode.tsv
 title.basics.tsv
+imdb_analysis/imdb_analysis.egg-info/
 *.pyc
 *build/
 *cache*
