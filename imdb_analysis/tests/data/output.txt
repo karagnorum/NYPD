@@ -1,3 +1,4 @@
+0 titles cannot be unambigously assigned a region and therefore where omitted during analysis 1 and 2
 ['GB', 'PL', 'US']
 ['GB', 'PL', 'US']
 ['GB', 'PL', 'US']
@@ -18,38 +19,6 @@
 ['GB', 'PL', 'US']
 ['GB', 'PL', 'US']
 ['GB', 'PL', 'US']
-  alpha-2  impact_rank
-0      GB            1
-1      PL            2
-2      US            3
-gdp   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
-gdp_pc   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
-population   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
-  alpha-2  impact_rank
-0      GB            1
-1      PL            2
-2      US            3
-gdp   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
-gdp_pc   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
-population   alpha-2  stat_rank
-0      GB          2
-1      PL          1
-2      US          3
 weak impact hegemons: {'gdp': {'PL'}, 'gdp_pc': {'PL'}, 'population': {'PL'}}
 strong impact hegemons: {'gdp': {'PL'}, 'gdp_pc': {'PL'}, 'population': {'PL'}}
 There were found 0 series with at least one season without first episode and were omitted during analysis 3.

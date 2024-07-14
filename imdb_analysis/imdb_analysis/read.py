@@ -4,14 +4,16 @@ import os
 
 def get_regions(akas):
     """Assigns a region to each country if it can be unambigously assigned"""
-    original_titles = akas[akas['isOriginalTitle'] == 1][['tconst', 'title']]
-    akas = akas[akas['isOriginalTitle'] == 0].merge(original_titles, on=['tconst', 
+    original_titles = akas.loc[akas['isOriginalTitle'] == 1][['tconst', 'title']]
+    akas = akas.loc[akas['isOriginalTitle'] == 0].merge(original_titles, on=['tconst', 
                                                                          'title'])
     counts = akas.groupby(['tconst', 'title']).count()
     counts.reset_index(inplace=True)
     #movies, to which we can unambigously assign a region
-    movies_with_region_defined = counts[counts['region'] == 1]['tconst']
+    movies_with_region_defined = counts.loc[counts['region'] == 1]['tconst']
     akas = akas.merge(movies_with_region_defined, on='tconst')
+    how_many_skipped = len(counts.loc[counts['region'] != 1].index)
+    print(str(how_many_skipped) + ' titles cannot be unambigously assigned a region and therefore where omitted during analysis 1 and 2')
     return akas[['tconst', 'region']]
 
 def read_years(read_path):
